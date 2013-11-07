@@ -1,0 +1,75 @@
+﻿@model Kop.Web.Models.PrayerTemplateModel
+
+@{
+    ViewBag.MetaDescription = Model.PrayerTemplate == null ? "祈禱手冊" : Model.PrayerTemplate.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">var addthis_config = { "data_track_addressbar": true };</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5244fc8556974859"></script>
+
+<div>
+    <fieldset>
+        <legend>分類</legend>
+        @foreach (var category in Model.PrayerTemplateCategories)
+        {
+            <div class="span-4">@Html.ActionLink(category.Name, "PrayerTemplates", "PrayerTemplate", new { categoryId = category.PrayerTemplateCategoryId }, null)</div>
+        }
+    </fieldset>
+
+    @if (Model.PrayerTemplates.Count > 0)
+    {
+        <fieldset>
+            <legend>禱文</legend>
+            @foreach (var template in Model.PrayerTemplates)
+            {
+                <div class="span-4">@Html.ActionLink(template.Name, "PrayerTemplate", "PrayerTemplate", new { prayerTemplateId = template.PrayerTemplateId }, null)</div>
+            }
+        </fieldset>
+    }
+
+    @if (Model.PrayerTemplate != null)
+    {
+        <div>
+            <!-- AddThis Button BEGIN -->
+            <div style="float: right;" class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                <div>
+                    <a class="addthis_button_preferred_1"></a>
+                    <a class="addthis_button_preferred_2"></a>
+                    <a class="addthis_button_preferred_3"></a>
+                    <a class="addthis_button_preferred_4"></a>
+                    <a class="addthis_button_compact"></a>
+                </div>
+            </div>
+            <!-- AddThis Button END -->
+            <h3 style="text-align: center;">@Model.PrayerTemplate.Name</h3>
+            <div class="rounded_box2" style="padding: 10px; white-space: pre-line;">
+                <h4>簡介及背景</h4>
+                <div>@Model.PrayerTemplate.Introduction</div>
+            </div>
+
+            @if (Model.PrayerTemplate.PrayerTemplateBibles.Count > 0)
+            {
+                <hr class="space" />
+                <div class="rounded_box2" style="padding: 10px; white-space: pre-line;">
+                    <h4>請讀出以下的經文</h4>
+                    <ul>
+                        @foreach (var bible in Model.PrayerTemplate.PrayerTemplateBibles)
+                        {
+                            <li>@bible.Bible.Text.Trim() (@bible.Bible.BibleBook.NameChiAbbr @bible.Bible.Chapter : @bible.Bible.Verse)</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <hr class="space" />
+            <div class="rounded_box2" style="padding: 10px; white-space: pre-line;">
+                <h4>我們一起同心禱告</h4>
+                <div>@Model.PrayerTemplate.Detail</div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+

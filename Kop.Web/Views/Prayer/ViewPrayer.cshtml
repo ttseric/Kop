@@ -1,0 +1,116 @@
+﻿@model Kop.Web.Models.ViewPrayerModel
+@{    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MetaDescription = "請為我代禱：「" + Model.Detail.Substring(0, Model.Detail.Length < 20 ? Model.Detail.Length : 20) + "...」";
+}
+<script type="text/javascript">var addthis_config = { "data_track_addressbar": true };</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5244fc8556974859"></script>
+
+@using (Html.BeginForm())
+{
+    <div style="padding: 10px;" class="rounded_box2">
+        <div class="span-4">
+            <h3>請為此代禱</h3>
+        </div>
+
+        <!-- AddThis Button BEGIN -->
+        <div style="float: right;" class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <div>
+                <a id="facebookBtn" class="addthis_button_preferred_1" addthis:url="http://priestprayer.com/Prayer/ViewPrayer?prayerId=@Model.Id"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+            </div>            
+        </div>
+        <!-- AddThis Button END -->
+        <div class="span-13" style="white-space: pre-line"><strong>@Model.Detail</strong></div>
+        <hr class="space" />
+        <div>@Model.RequestBy - @Model.From</div>
+        <hr class="space" />
+        <div class="span-13">@Model.SharedTime</div>
+        <hr class="space" />
+        <span id='supportPrayerCount_@Model.Id'>代禱勇士: @Model.Support 人</span> <span style="color: red; cursor: pointer;" id='supportPrayerLink_@Model.Id'>我願意為此代禱</span>
+        <hr class="space" />
+        @if (Model.PrayerAnswer != null)
+        {
+            <hr class="dot" />
+            <div class="span-13">
+                <h3>神如何回應</h3>
+            </div>
+            <div class="span-13">
+                <strong>
+                    @Model.PrayerAnswer.Detail
+                </strong>
+            </div>
+            <hr class="space" />
+            <span id="praiseGodCount">讚美主: @Model.PrayerAnswer.PraiseGodCount 人</span>
+            <span style="color: red; cursor: pointer;" id="praiseGodLink" onclick=" PraiseGod($('#praiseGodCount')) ">我要讚美主</span>
+        }
+    </div>
+}
+<div id="thanksForPray" title="感謝你的支持!">
+    親愛的代禱勇士，感謝您為 @Model.RequestBy 代禱，願神祝福您家庭和您的工作 。
+</div>
+
+<div id="thanksForPraiseGod" title="感謝您的支持!">
+    親愛的弟兄姊妹，感謝您參與，願一切的榮耀頌讚歸我們的三一真神。
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#thanksForPray').dialog({
+            hide: { effect: "fadeOut", duration: 1000 }, autoOpen: false, open: function () {
+                setTimeout(function () {
+                    $('#thanksForPray').dialog('close');
+                }, 2000);
+            }
+        });
+
+        $('#thanksForPraiseGod').dialog({
+            hide: { effect: "fadeOut", duration: 1000 }, autoOpen: false, open: function () {
+                setTimeout(function () {
+                    $('#thanksForPraiseGod').dialog('close');
+                }, 2000);
+            }
+        });
+
+        $('#supportPrayerLink_@Model.Id').click(function () {
+            var data = { "prayerId": "@Model.Id" };
+            var updateTarget = $('#supportPrayerCount_@Model.Id');
+
+            SupportPrayer(updateTarget, data);
+        });
+    });
+
+    function PraiseGod(updateTarget) {
+        var data = { "prayerId": "@Model.Id" };
+
+        $.ajax({
+            url: "/Prayer/PraiseGodAjax",
+            data: data,
+            type: "Post",
+            success: function (response) {
+                updateTarget.text("讚美主: " + response + " 人");
+                $('#thanksForPraiseGod').dialog('open');
+            },
+            error: function (error) {
+                alert("error");
+            }
+        });
+    }
+
+    function SupportPrayer(updateTarget, data) {
+        $.ajax({
+            url: "/Prayer/SupportPrayerAjax",
+            data: data,
+            type: "Post",
+            success: function (response) {
+                updateTarget.text("代禱勇士: " + response + " 人");
+                $('#thanksForPray').dialog('open');
+            },
+            error: function (error) {
+            }
+        });
+    }
+</script>

@@ -1,0 +1,33 @@
+﻿@model Kop.Web.Models.WritePrayerAnswerModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("SubmitPrayerAnswer", "MyPrayer", FormMethod.Post))
+{
+    <div style="padding: 10px;" class="rounded_box2">
+        <div class="span-14">
+            <h3>代禱內容</h3>
+        </div>
+        @Html.HiddenFor(x => x.Id)
+        <div class="span-14"><strong>@Html.DisplayTextFor(x => x.Detail)</strong></div>
+        <hr class="space" />
+        <div>@Html.DisplayTextFor(x => x.RequestBy) - @Html.DisplayTextFor(x => x.From)</div>
+        <hr class="space" />
+        <div class="span-14">@Html.DisplayTextFor(x => x.SharedTime)</div>
+        <hr class="space" />
+        <span>代禱勇士: @Html.DisplayTextFor(x => x.Support) 人</span>
+        <hr class="space"/>
+        <hr class="dot" />
+        <div class="span-14">
+            <h3>神如何回應</h3>
+        </div>
+        <div class="span-14">
+            @Html.TextAreaFor(x => x.PrayerAnswer, new { @class = "span-13", rows = "15" })
+        </div>
+        <hr class="space" />
+        <div class="span-14">
+            <input id="submitButton" type="submit" value="提交" />
+        </div>
+    </div>
+}

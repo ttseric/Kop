@@ -1,0 +1,23 @@
+﻿@model Kop.Web.Models.PrayerRequestModel
+
+@{
+    ViewBag.Title = "代禱請求";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SubmitPrayer", "PrayerRequest", FormMethod.Post))
+{
+
+    <div style="padding: 10px;" class="rounded_box2">
+        <h3>請填寫你需要代禱的內容</h3>
+        @Html.ValidationSummary()
+        <div class="span-3">@Html.LabelFor(x => x.PrayBy)</div>@Model.PrayBy
+        <hr class="space" />
+        <div class="span-3">@Html.LabelFor(x => x.From)</div>@Html.DropDownListFor(x => x.From, Model.CountryList, new { @class = "span-10" })
+        <hr class="space" />
+        <div class="span-3">@Html.LabelFor(x => x.Detail)</div>@Html.TextAreaFor(x => x.Detail, new { @class = "span-10", rows = "27", maxlength="2500" })        
+        <hr class="space" />
+        <div class="span-3">&nbsp;</div>
+        <input id="submitButton" type="submit" value="提交" />
+    </div>
+}

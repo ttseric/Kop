@@ -1,0 +1,55 @@
+﻿@model Kop.Web.Models.ViewPrayerModel
+
+@{
+    ViewBag.Title = "ViewMyPrayer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">var addthis_config = { "data_track_addressbar": true };</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5244fc8556974859"></script>
+
+@using (Html.BeginForm())
+{
+    <div style="padding: 10px;" class="rounded_box2">
+        <div class="span-4">
+            <h3>代禱內容</h3>
+        </div>
+
+        <!-- AddThis Button BEGIN -->
+        <div style="float: right;" class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <div>
+                <a id="facebookBtn" class="addthis_button_preferred_1" addthis:url="http://www.priestprayer.com/Prayer/ViewPrayer?prayerId=@Model.Id"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+            </div>
+            <!-- AddThis Button END -->
+        </div>
+        <div class="span-13"><strong>@Html.Raw(Model.Detail)</strong></div>
+        <hr class="space" />
+        <div>@Model.RequestBy - @Model.From</div>
+        <hr class="space" />
+        <div class="span-13">@Model.SharedTime</div>
+        <hr class="space" />
+        <span>代禱勇士: @Model.Support 人</span>
+        <hr class="space" />
+        <hr class="dot" />
+        @if (Model.PrayerAnswer != null)
+        {
+            <div class="span-13">
+                <h3>神如何回應</h3>
+            </div>
+            <div class="span-13">
+                <strong>
+                    @Model.PrayerAnswer.Detail
+                </strong>
+            </div>
+            <hr class="space" />
+            <span id="praiseGodCount">讚美主: @Model.PrayerAnswer.PraiseGodCount 人</span>
+        }
+        <hr class="space" />
+        @Html.ActionLink("填寫神如何回應我的禱告", "WritePrayerAnswer", new { prayerId = Model.Id }, new { @style = "color:red" })
+    </div>
+}

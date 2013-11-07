@@ -1,0 +1,10 @@
+﻿@model Kop.Web.Models.ViewPrayersModel
+
+@{
+    ViewBag.Title = "ViewMySupportPrayer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@foreach (var prayer in Model.Prayers)
+{
+    Html.RenderPartial("ViewMySupportPrayerPartial", prayer);
+}

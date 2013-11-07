@@ -1,0 +1,62 @@
+﻿@model Kop.Web.Models.SearchBibleModel
+
+@{   
+    ViewBag.MetaDescription = Model.DisplayBibles.Count == 0 ? "線上聖經" : "經文分享: " + @Model.DisplayBibles[0].BibleBook.NameChi + @Model.DisplayBibles[0].Chapter + "章" + @Model.DisplayBibles.First().Verse + "至" + @Model.DisplayBibles.Last().Verse + "節";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">var addthis_config = { "data_track_addressbar": true };</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5244fc8556974859"></script>
+
+<div>
+    <fieldset>
+        <legend>新舊約全書 (中文和合本)</legend>
+        @foreach (var bibleBook in Model.BibleBooks.OrderBy(x => x.Index))
+        {            
+            <div class="span-3-5 last" style="font-size: 0.9em;">@Html.ActionLink(bibleBook.NameChi, "SearchBibleResult", "Bible", new { bookName = bibleBook.Name, chapter = "1", fromVerse = "1", toVerse = "777" }, null) </div>
+        }
+    </fieldset>
+    @if (Model.Chatpers.Count > 0)
+    {
+        <fieldset>
+            <legend>章</legend>
+            @foreach (var chapter in Model.Chatpers.OrderBy(x => x))
+            {
+                <div class="span-1">@Html.ActionLink(chapter.ToString(), "SearchBibleResult", "Bible", new { bookName = Model.DisplayBibles[0].BibleBook.Name, chapter = chapter.ToString(), fromVerse = "1", toVerse = "777" }, null) </div>
+            }
+        </fieldset>
+    }
+</div>
+@if (Model.DisplayBibles.Count > 0)
+{
+    <div>
+        <!-- AddThis Button BEGIN -->
+        <div style="float: right; padding-right: 40px;" class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <div>
+                <a class="addthis_button_preferred_1"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+            </div>
+        </div>
+        <!-- AddThis Button END -->
+
+        <h3>@Model.DisplayBibles[0].BibleBook.NameChi @Model.DisplayBibles[0].Chapter 章 @Model.DisplayBibles.First().Verse 至 @Model.DisplayBibles.Last().Verse 節</h3>
+        <table>
+            @foreach (var bible in Model.DisplayBibles)
+            {
+                <tr>
+                    <td class="span-2">@bible.BibleBook.NameChiAbbr</td>
+                    <td class="span-2">@bible.Chapter:@bible.Verse</td>
+                    <td class="span-10">@bible.Text.Trim()</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $("tr:even").addClass("even");
+        $("tr:odd").addClass("odd");
+    });
+</script>

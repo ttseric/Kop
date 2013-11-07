@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="title" content="祭司的國度, The Kingdom of Priests" />
+    <meta itemprop="name" content="祭司的國度, The Kingdom of Priests" />
+    <meta name="description" content="@ViewBag.MetaDescription" />
+    <meta itemprop="description" content="@ViewBag.MetaDescription" />
+    <meta property="og:image" content="http://www.priestprayer.com/Content/Image/prayer.png" />
+    <meta name="keywords" content="prayer, 禱告, 代禱, 基督教, christian, Online Bible, 線上聖經" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    <title>祭司的國度, The Kingdom of Priests</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="span-4 title">祭司的國度</div>
+            <div class="span-14">
+                <blockquote>“我向埃及人所行的事，你們都看見了…要在萬民中作屬我的子民…你們要歸我作祭司的國度，為聖潔的國民。這些話你要告訴以色列人。” (出埃及記第十九章四至六節)</blockquote>
+            </div>
+
+            <div class="top_menu">
+                @if (!Request.IsAuthenticated)
+                {                    
+                    <div style="float: right;">
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { defaultButton = "login", id = "loginForm" }))
+                        {
+                            <input style="font-size: 10px; width: 80px; height: 15px;" type="text" name="Name" />
+                            <input style="font-size: 10px; width: 80px; height: 15px;" type="password" name="Password" />
+                            <a id="login" alt="登入" href="#">[登入]</a>
+                            @Html.ActionLink("[註冊]", "Register", "Account", null, new { alt = "註冊" })
+                        }
+                    </div>
+                }
+                else
+                {
+                    <text>歡迎, @User.Identity.Name</text>
+                    <ul>
+                        <li>@Html.ActionLink("[登出]", "Logout", "Account")</li>
+                    </ul>                    
+                }
+
+            </div>
+            <hr class="space" />
+
+        </div>
+        <div class="left_menu">
+            <ul>
+                <li>@Html.ActionLink("關於我們", "Introduction", "About", null, new { @class = Html.ActivePage("About", "Introduction"), alt = "關於我們" })</li>
+                <hr class="space" />
+
+                <li>@Html.ActionLink("代禱", "ViewPrayers", "Prayer", null, new { @class = Html.ActivePage("Prayer", "ViewPrayers, ViewPrayer"), alt = "代禱" })</li>
+                <li>@Html.ActionLink("請為我代禱", "PrayerRequest", "PrayerRequest", null, new { @class = Html.ActivePage("PrayerRequest", "PrayerRequest"), alt = "請為我代禱" })</li>
+                <li>@Html.ActionLink("線上聖經", "ViewBible", "Bible", null, new { @class = Html.ActivePage("Bible", "ViewBible, SearchBibleResult"), alt = "線上聖經" })</li>
+                <li>@Html.ActionLink("祈禱手冊", "Categories", "PrayerTemplate", null, new { @class = Html.ActivePage("PrayerTemplate", "PrayerTemplates"), alt = "祈禱手冊" })</li>
+                @if (Request.IsAuthenticated)
+                {
+                    <hr class="space" />
+                    <li>@Html.ActionLink("代禱請求", "ViewMyPrayers", "MyPrayer", null, new { @class = Html.ActivePage("Prayer", "ViewMyPrayers, ViewMyPrayer"), alt = "代禱請求" })</li>
+                    <li>@Html.ActionLink("代禱事項", "ViewMySupportPrayer", "MyPrayer", null, new { @class = Html.ActivePage("Prayer", "ViewMySupportPrayer"), alt = "代禱事項" })</li>                    
+                }
+            </ul>
+        </div>
+        <div class="main">
+            @RenderBody()
+        </div>
+    </div>
+    <div class="footer">
+        COPYRIGHT © 2013, EricXT Software Devleopment Team Inc. ALL RIGHTS RESERVED.
+    </div>
+
+    <script>
+        var ButtonKeys = { "EnterKey": 13 };
+
+        $(document).ready(function () {
+            $('#login').click(function () {
+                $('#loginForm').submit();
+            });
+
+            $("#loginForm").keypress(function (e) {
+                if (e.which == ButtonKeys.EnterKey) {
+                    var defaultButtonId = $(this).attr("defaultbutton");
+                    $("#" + defaultButtonId).click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

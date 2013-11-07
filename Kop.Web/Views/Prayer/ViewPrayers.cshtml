@@ -1,0 +1,10 @@
+﻿@model Kop.Web.Models.ViewPrayersModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.MetaDescription = "請為此代禱";
+}
+@foreach (var prayer in Model.Prayers)
+{
+    Html.RenderPartial("ViewPrayerPartial", prayer);
+}
